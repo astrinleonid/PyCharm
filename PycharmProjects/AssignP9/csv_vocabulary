@@ -1,0 +1,7 @@
+def create_vocabulary_file (voc);
+
+    with open('HM_voc.csv', mode = 'w') as voc_file:
+        voc_writer = csv.writer(voc_file, delimiter = ',')
+        voc_writer.writerow('words')
+        for item in voc:
+            voc_writer.writerow(item)

@@ -1,0 +1,99 @@
+import random
+
+
+def print_logo():  # TODO make a logo
+    logo = """
+    _____________________
+    |      HANGMAN      |
+    L___________________]
+    H H  //           |
+    H H //           ( )                  Welcome to the
+    H H//             I                       HANGMAN
+    H H             / I \                      game!
+    H H            /  I  \
+    H H               I
+    H H             /   \                  Don't let them
+    H H            |     |                   hang you!
+    H H            |     |
+    H H
+
+    """
+    print(logo)
+
+
+def welcome():
+    print_logo()
+    name = input("What is your name? \n >")
+    print("Hi", name, "! Welcome to the HANGMAN game!")
+    return name
+
+
+def choose_the_word():
+    voc = ['rat', 'cat', 'bat', 'universe', 'peace', 'unity', 'friend', 'science', 'travel', 'adventure', 'party',
+           'birthday', 'TroUble', 'QueStion', 'DEVIATION', 'ANOMALY', 'PROBLEM', 'Deram', 'Tale', 'Country']
+    return random.choice(voc)
+
+
+def get_players_guess(n):
+    while True:
+        print("You have ", n, "tries")
+        inp = input("What is your guess? Please enter a letter\n >")
+        inp = inp.lower()
+        if len(inp) == 1 and inp >= 'a' and inp <= 'y':
+            return inp
+        else:
+            print("Your input is invalid")
+
+
+def guessed_letter(word, wts, c):
+    nwts = ''
+    for i in range(len(word)):
+        if word[i] == c:
+            nwts += c
+        else:
+            nwts += wts[i]
+    return nwts
+
+
+def display_word(word):
+    print("******  ", word.upper(), "  ******")
+
+
+def player_won(word, name):
+    print("Congrats,", name, ", you are the best!!!")
+    print("You have guessed the word")
+    display_word(word)
+
+
+def hangman_game():
+    guesses = ''
+    word = choose_the_word().lower()
+    word_to_show = ''
+    for i in range(len(word)):
+        word_to_show += '*'
+    players_cash = 10
+    name = welcome()
+    while players_cash > 0:
+        print("Guess the word: ", word_to_show.upper())
+        bet = get_players_guess(players_cash)
+        if bet in guesses:
+            print("This letter was already tried")
+            continue
+        guesses += bet
+        players_cash -= 1
+        if bet in word:
+            print("Good guess!")
+            word_to_show = guessed_letter(word, word_to_show, bet)
+            players_cash += 1
+        else:
+            print("It's a miss, sorry")
+        if word_to_show == word:
+            player_won(word, name)
+            return 0
+    print("Sorry,", name, ", no more tries. You lost")
+    print("Hidden word was")
+    display_word(word)
+
+
+if __name__ == '__main__':
+    hangman_game()
